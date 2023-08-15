@@ -1,0 +1,65 @@
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  row-gap: 15px;
+  background: #000;
+  color: white;
+  font-size: 30px;
+}
+.main-title {
+  font-size: 50px;
+  margin-bottom: 40px;
+}
+button {
+  outline: none;
+  border: none;
+  background: none;
+  color: white;
+  cursor: pointer;
+}
+.fa {
+  font-size: 32px;
+}
+.fa-solid {
+  font-size: 1.7rem;
+}
+#time-left {
+  font-size: 60px;
+  letter-spacing: 1.5px;
+}
+.timer {
+  border: 7px solid #13353a;
+  margin: 20px auto 10px auto;
+  width: 270px;
+  height: 160px;
+  border-radius: 50px;
+  position: relative;
+  line-height: 65px;
+}
+.author {
+  text-align: center;
+  font-family: Share Tech Mono, sans;
+  margin-top: 15px;
+  font-size: 18px;
+  color: #a50d0d;
+}
+
+.author a {
+  text-decoration: none;
+  color: #003a76;
+  line-height: 26px;
+}
+@media screen and (max-width: 470px) {
+  body {
+    background-color: rgb(114, 187, 211);
+  }
+  .timer {
+    border: 5px solid #13353a;
+    width: 253px;
+    height: 139px;
+    line-height: 52px;
+  }
+}
