@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const sessionDecrement = document.getElementById("session-decrement");
   const sessionIncrement = document.getElementById("session-increment");
   const sessionLength = document.getElementById("session-length");
-  const timerLabel = document.getElementById("timer-label");
   const timeLeft = document.getElementById("time-left");
   const startStop = document.getElementById("start_stop");
   const reset = document.getElementById("reset");
@@ -13,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let isSession = true;
   let isRunning = false;
+  let pausedTime = 0;
   let timer;
 
   function updateDisplay() {
@@ -20,21 +20,30 @@ document.addEventListener("DOMContentLoaded", function () {
       .toString()
       .padStart(2, "0");
     const seconds = (timer % 60).toString().padStart(2, "0");
-    console.log(seconds);
     timeLeft.textContent = `${minutes}:${seconds}`;
+
+    const timerBox = document.getElementsByClassName("timer")[0];
+    if (minutes == 1) {
+      timerBox.style.border = "6px solid red";
+      timerBox.style.color = "red";
+    }
   }
 
   function toggleTimer() {
     if (!isRunning) {
+      if (pausedTime === 0) {
+        timer = parseInt(sessionLength.textContent) * 60;
+      } else {
+        timer = pausedTime;
+        pausedTime = 0;
+      }
       isRunning = true;
-      //   startStop.textContent = "Pause";
-      timer = parseInt(sessionLength.textContent) * 60;
       updateDisplay();
       countdown();
     } else {
       isRunning = false;
-      //   startStop.textContent = "Start";
       clearInterval(timerInterval);
+      pausedTime = timer;
     }
   }
 
@@ -44,11 +53,9 @@ document.addEventListener("DOMContentLoaded", function () {
         beep.play();
         clearInterval(timerInterval);
         if (isSession) {
-          timerLabel.textContent = "Break";
           timer = parseInt(breakLength.textContent) * 60;
           isSession = false;
         } else {
-          timerLabel.textContent = "Session";
           timer = parseInt(sessionLength.textContent) * 60;
           isSession = true;
         }
@@ -63,8 +70,6 @@ document.addEventListener("DOMContentLoaded", function () {
   function resetTimer() {
     isRunning = false;
     isSession = true;
-    // startStop.textContent = "Start";
-    timerLabel.textContent = "Session";
     clearInterval(timerInterval);
     timer = parseInt(sessionLength.textContent) * 60;
     updateDisplay();
@@ -72,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
     beep.currentTime = 0;
   }
 
-  breakDecrement.addEventListener("click", () => {
+  breakDecrement.onclick = () => {
     if (parseInt(breakLength.textContent) > 1) {
       breakLength.textContent = parseInt(breakLength.textContent) - 1;
       if (!isRunning && !isSession) {
@@ -80,9 +85,9 @@ document.addEventListener("DOMContentLoaded", function () {
         updateDisplay();
       }
     }
-  });
+  };
 
-  breakIncrement.addEventListener("click", () => {
+  breakIncrement.onclick = () => {
     if (parseInt(breakLength.textContent) < 60) {
       breakLength.textContent = parseInt(breakLength.textContent) + 1;
       if (!isRunning && !isSession) {
@@ -90,9 +95,9 @@ document.addEventListener("DOMContentLoaded", function () {
         updateDisplay();
       }
     }
-  });
+  };
 
-  sessionDecrement.addEventListener("click", () => {
+  sessionDecrement.onclick = () => {
     if (parseInt(sessionLength.textContent) > 1) {
       sessionLength.textContent = parseInt(sessionLength.textContent) - 1;
       if (!isRunning && isSession) {
@@ -100,9 +105,9 @@ document.addEventListener("DOMContentLoaded", function () {
         updateDisplay();
       }
     }
-  });
+  };
 
-  sessionIncrement.addEventListener("click", () => {
+  sessionIncrement.onclick = () => {
     if (parseInt(sessionLength.textContent) < 60) {
       sessionLength.textContent = parseInt(sessionLength.textContent) + 1;
       if (!isRunning && isSession) {
@@ -110,9 +115,9 @@ document.addEventListener("DOMContentLoaded", function () {
         updateDisplay();
       }
     }
-  });
+  };
 
-  startStop.addEventListener("click", toggleTimer);
+  startStop.onclick = toggleTimer;
 
-  reset.addEventListener("click", resetTimer);
+  reset.onclick = resetTimer;
 });
